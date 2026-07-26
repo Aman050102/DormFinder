@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dorm Finder — ผู้ใช้ : หน้าแรก</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: #F8F4F0;
+      color: #2D2D2D;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #2D2D2D;
+      color: white;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+    header h1 i { color: #5BA67D; }
+    .user-badge {
+      background: #5BA67D;
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 40px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .container .big-icon {
+      font-size: 3.5rem;
+      color: #5BA67D;
+      margin-bottom: 16px;
+    }
+    .container h2 { font-size: 1.6rem; margin-bottom: 8px; }
+    .container p { color: #666; margin-bottom: 24px; line-height: 1.6; }
+    .info-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .info-card {
+      background: #F8F4F0;
+      padding: 20px 28px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 150px;
+    }
+    .info-card i { font-size: 1.5rem; color: #5BA67D; margin-bottom: 8px; }
+    .info-card .num { font-size: 1.5rem; font-weight: 800; }
+    .info-card .label { font-size: 0.78rem; color: #999; }
+    .btn-logout {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 32px;
+      background: #E74C3C;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+    .btn-logout:hover { background: #C0392B; }
+    .btn-logout:active { transform: scale(0.97); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><i class="fas fa-building"></i> Dorm Finder</h1>
+    <span class="user-badge"><i class="fas fa-user"></i> ผู้ใช้ทั่วไป</span>
+  </header>
+
+  <div class="container">
+    <div class="big-icon"><i class="fas fa-smile"></i></div>
+    <h2>ยินดีต้อนรับสู่ Dorm Finder</h2>
+    <p>คุณได้เข้าสู่ระบบในฐานะ <strong>ผู้ใช้ทั่วไป</strong> <br>เลือกดูหอพักที่คุณสนใจ หรือแก้ไขโปรไฟล์ของคุณ</p>
+
+    <div class="info-row">
+      <div class="info-card">
+        <i class="fas fa-home"></i>
+        <div class="num">0</div>
+        <div class="label">หอพักที่บันทึก</div>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-heart"></i>
+        <div class="num">0</div>
+        <div class="label">หอพักที่ถูกใจ</div>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-star"></i>
+        <div class="num">—</div>
+        <div class="label">รีวิว</div>
+      </div>
+    </div>
+
+    <button class="btn-logout" onclick="handleLogout()">
+      <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+    </button>
+  </div>
+
+  <script src="../../assets/js/api.js"></script>
+  <script>
+    async function handleLogout() {
+      await API.logout();
+      window.location.href = '../../login.html';
+    }
+
+    // Check session
+    (function() {
+      const session = JSON.parse(localStorage.getItem('dormFinderSession'));
+      if (!session || session.role !== 'user') {
+        window.location.href = '../../login.html';
+      }
+    })();
+  </script>
+</body>
+</html>

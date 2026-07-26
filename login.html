@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dorm Finder — เข้าสู่ระบบ</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="img/โลโก้-2.png" type="image/png" sizes="16x16">
+  <style>
+    :root {
+      --bg: #F5F0EB;
+      --card-bg: #FFFFFF;
+      --text: #1A1A1A;
+      --text-muted: #6B7280;
+      --accent: #A0785A;
+      --accent-light: #F0E8DE;
+      --accent-hover: #8B6544;
+      --error: #E74C3C;
+      --success: #27AE60;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 40px rgba(0,0,0,0.06);
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      box-shadow: var(--shadow);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+      transition: var(--transition);
+    }
+    .back-link:hover { color: var(--accent); }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .form-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .alert {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert.show { display: flex; }
+    .alert-error { background: #FDEAEA; color: var(--error); border: 1px solid #F5C6C6; }
+    .alert-success { background: #E8F5E9; color: var(--success); border: 1px solid #C8E6C9; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-group .input-icon {
+      position: absolute;
+      left: 13px;
+      color: #B0A89E;
+      font-size: 0.92rem;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 13px 12px 40px;
+      border: 1.5px solid #D5CCC2;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #FAFAFA;
+      outline: none;
+      transition: var(--transition);
+    }
+    .input-group input:focus {
+      border-color: var(--accent);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(160, 120, 90, 0.12);
+    }
+    .input-group input.error {
+      border-color: var(--error);
+      background: #FFF5F5;
+    }
+    .input-group input::placeholder { color: #B0A89E; }
+    .toggle-pwd {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #B0A89E;
+      padding: 6px;
+      font-size: 0.92rem;
+      z-index: 1;
+    }
+    .toggle-pwd:hover { color: var(--text); }
+    .form-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .remember-me input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .forgot-link {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+    .btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 16px rgba(160, 120, 90, 0.30);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .form-switch {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .form-switch a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .form-switch a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> กลับ
+    </a>
+    <h1>เข้าสู่ระบบ</h1>
+    <p class="form-subtitle">ยินดีต้อนรับกลับ! กรุณาเข้าสู่ระบบ</p>
+
+    <div id="alertMessage" class="alert" role="alert">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="alertText"></span>
+    </div>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label for="loginEmail">อีเมล</label>
+        <div class="input-group">
+          <i class="fas fa-envelope input-icon"></i>
+          <input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">รหัสผ่าน</label>
+        <div class="input-group">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" id="loginPassword" placeholder="รหัสผ่านของคุณ" autocomplete="current-password" required>
+          <button type="button" class="toggle-pwd" onclick="togglePwd('loginPassword', this)" aria-label="แสดง/ซ่อนรหัสผ่าน">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-footer">
+        <label class="remember-me">
+          <input type="checkbox" id="rememberMe" checked> จดจำฉันไว้
+        </label>
+        <a href="#" class="forgot-link">ลืมรหัสผ่าน?</a>
+      </div>
+      <button type="submit" class="btn btn-primary" id="loginSubmitBtn">
+        <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+      </button>
+    </form>
+
+    <div class="form-switch">
+      ยังไม่มีบัญชี? <a href="register.html">สมัครสมาชิก</a>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script>
+    'use strict';
+
+    const loginForm  = document.getElementById('loginForm');
+    const emailInput = document.getElementById('loginEmail');
+    const pwdInput   = document.getElementById('loginPassword');
+    const alertBox   = document.getElementById('alertMessage');
+    const alertText  = document.getElementById('alertText');
+    const submitBtn  = document.getElementById('loginSubmitBtn');
+    const rememberMe = document.getElementById('rememberMe');
+
+    function showAlert(msg, type = 'error') {
+      alertBox.className = `alert alert-${type} show`;
+      alertText.textContent = msg;
+    }
+    function hideAlert() {
+      alertBox.className = 'alert';
+      alertText.textContent = '';
+    }
+
+    function togglePwd(fieldId, btn) {
+      const f = document.getElementById(fieldId);
+      if (!f) return;
+      const icon = btn.querySelector('i');
+      if (f.type === 'password') {
+        f.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        f.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.innerHTML = loading
+        ? '<i class="fas fa-spinner fa-spin"></i> กำลังเข้าสู่ระบบ...'
+        : '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ';
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const email = emailInput.value.trim();
+      const password = pwdInput.value.trim();
+      emailInput.classList.remove('error');
+      pwdInput.classList.remove('error');
+
+      if (!email) {
+        showAlert('⚠️ กรุณากรอกอีเมล');
+        emailInput.classList.add('error');
+        emailInput.focus();
+        return;
+      }
+      if (!password) {
+        showAlert('⚠️ กรุณากรอกรหัสผ่าน');
+        pwdInput.classList.add('error');
+        pwdInput.focus();
+        return;
+      }
+
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(email)) {
+        showAlert('⚠️ รูปแบบอีเมลไม่ถูกต้อง');
+        emailInput.classList.add('error');
+        emailInput.focus();
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const result = await API.login(email, password);
+        if (result.success) {
+          showAlert('✅ เข้าสู่ระบบสำเร็จ!', 'success');
+          setTimeout(() => {
+            const dashboard = result.user?.role === 'admin'
+              ? 'pages/admin/dashboard.html'
+              : 'pages/user/dashboard.html';
+            window.location.href = dashboard;
+          }, 800);
+        }
+      } catch (err) {
+        console.warn('API login failed, fallback localStorage:', err.message);
+        const users = JSON.parse(localStorage.getItem('dormFinderUsers') || '[]');
+        const user = users.find(u => u.email === email && u.password === password);
+        if (user) {
+          localStorage.setItem('dormFinderSession', JSON.stringify({
+            ...user,
+            loginTime: new Date().toISOString(),
+            rememberMe: rememberMe.checked
+          }));
+          showAlert('✅ เข้าสู่ระบบสำเร็จ! (Local)', 'success');
+          setTimeout(() => {
+            const dashboard = user.role === 'admin'
+              ? 'pages/admin/dashboard.html'
+              : 'pages/user/dashboard.html';
+            window.location.href = dashboard;
+          }, 800);
+        } else {
+          showAlert('❌ อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+          setLoading(false);
+        }
+      }
+    }
+
+    // Pre-fill email from URL param
+    (function init() {
+      const params = new URLSearchParams(window.location.search);
+      const emailParam = params.get('email');
+      if (emailParam) {
+        emailInput.value = emailParam;
+        pwdInput.focus();
+      }
+    })();
+
+    loginForm.addEventListener('submit', handleLogin);
+  </script>
+</body>
+</html>

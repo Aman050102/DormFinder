@@ -1,0 +1,29 @@
+name = "dorm-finder-api"
+main = "src/index.ts"
+compatibility_date = "2024-09-01"
+
+# ============================================================
+# D1 Database — Cloudflare's serverless SQLite
+# ============================================================
+# Step 1: สร้าง database (รันครั้งแรกเท่านั้น)
+#   npx wrangler d1 create dorm-finder-db
+#
+# Step 2: เอา database_id ที่ได้มาใส่ด้านล่าง
+#   (สำหรับ dev local ใช้ --local ก็ได้ ไม่ต้องใส่ id จริง)
+#
+# Step 3: รัน migrate
+#   npm run migrate:local    # สำหรับ dev
+#   npm run migrate:remote   # สำหรับ production
+# ============================================================
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dorm-finder-db"
+database_id = ""          # ← ใส่ database_id หลังจากสร้าง
+migrations_dir = "migrations"
+
+# ============================================================
+# Firebase Project Configuration
+# ============================================================
+[vars]
+FIREBASE_PROJECT_ID = "dorm-finder-be63f"

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dorm Finder — ค้นหาหอพักที่ใช่สำหรับคุณ</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="img/โลโก้-2.png" type="image/png" sizes="16x16">
+  <style>
+    :root {
+      --bg: #F5F0EB;
+      --text: #1A1A1A;
+      --text-muted: #6B7280;
+      --accent: #A0785A;
+      --accent-dark: #8B6544;
+      --accent-light: #F0E8DE;
+      --white: #FFFFFF;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .splash {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
+    .icon-container {
+      width: 110px;
+      height: 110px;
+      background: var(--white);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.02);
+      margin-bottom: 8px;
+    }
+    .icon-container svg {
+      width: 54px;
+      height: 54px;
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .splash h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .splash h1 span { color: var(--accent); }
+    .splash .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 300px;
+      margin-top: -4px;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      color: #C5BDB5;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin: 4px 0;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #DCD4CB;
+    }
+    .btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.93rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font);
+      text-decoration: none;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .btn-google {
+      background: var(--white);
+      color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.06);
+    }
+    .btn-google:hover:not(:disabled) {
+      background: #F5F5F5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .btn-email {
+      background: var(--accent);
+      color: var(--white);
+    }
+    .btn-email:hover:not(:disabled) {
+      background: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(160, 120, 90, 0.30);
+    }
+    .btn-outline {
+      width: auto;
+      display: inline-flex;
+      padding: 10px 28px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 24px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .btn-outline:hover { background: #E2D4C6; }
+    .btn-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 16px;
+      font-size: 0.78rem;
+      color: #B0A89E;
+      margin-top: 8px;
+    }
+    .footer-links a {
+      color: #B0A89E;
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <div class="splash">
+
+    <!-- House Icon -->
+    <div class="icon-container">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 12l9-9 9 9" />
+        <path d="M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10" />
+        <path d="M9 21V12h6v9" />
+      </svg>
+    </div>
+
+    <!-- Title -->
+    <h1>Dorm <span>Finder</span></h1>
+
+    <!-- Subtitle -->
+    <p class="subtitle">
+      สมัครสมาชิกเพื่อเริ่มต้น<br>
+      ค้นหาหอพักที่ใช่สำหรับคุณ
+    </p>
+
+    <!-- Social Sign-In -->
+    <div class="btn-group">
+
+      <!-- Google Sign-In -->
+      <button class="btn btn-google" id="googleSignInBtn" onclick="signInWithGoogle(this)">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        <span>เข้าสู่ระบบด้วย Google</span>
+      </button>
+
+      <!-- Divider -->
+      <div class="divider">หรือ</div>
+
+      <!-- Email Sign-In -->
+      <a href="login.html" class="btn btn-email">
+        <i class="fas fa-envelope"></i>
+        เข้าสู่ระบบด้วยอีเมล
+      </a>
+    </div>
+
+    <!-- Sign Up Link -->
+    <div style="margin-top: 4px;">
+      <a href="register.html" class="btn-outline">
+        เริ่มต้นใช้งาน <i class="fas fa-arrow-right" style="font-size:0.8rem;"></i>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-links">
+      <a href="#">ข้อกำหนด</a>
+      <a href="#">ความเป็นส่วนตัว</a>
+      <a href="#">ช่วยเหลือ</a>
+    </div>
+
+  </div>
+
+  <!-- ===== Firebase App + Auth SDKs ===== -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js">
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js">
+  </script>
+
+  <script>
+    'use strict';
+
+    /* ─────────────────────────────────────────────────────
+     * Firebase Config (from your project)
+     * ───────────────────────────────────────────────────── */
+    const firebaseConfig = {
+      apiKey: 'AIzaSy…wD-o',
+      authDomain: 'dorm-finder-be63f.firebaseapp.com',
+      projectId: 'dorm-finder-be63f',
+      storageBucket: 'dorm-finder-be63f.firebasestorage.app',
+      messagingSenderId: '873427338266',
+      appId: '1:873427338266:web:15b6d132f4bafed1f73da3',
+    };
+
+    // Initialize Firebase
+    const firebaseApp = firebase.initializeApp(firebaseConfig);
+    const firebaseAuth = firebase.auth(firebaseApp);
+    firebaseAuth.languageCode = 'th';
+
+    /* ─────────────────────────────────────────────────────
+     * API call helper
+     * ───────────────────────────────────────────────────── */
+    const API_BASE = window.__API_URL__ || 'http://localhost:8787/api';
+
+    async function sendFirebaseToken(idToken) {
+      const res = await fetch(API_BASE + '/auth/firebase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+      return await res.json();
+    }
+
+    /* ─────────────────────────────────────────────────────
+     * Login callback — creates session & redirects
+     * ───────────────────────────────────────────────────── */
+    async function handleFirebaseLogin(result) {
+      const idToken = await result.user.getIdToken(true);
+
+      const data = await sendFirebaseToken(idToken);
+
+      if (data.success) {
+        localStorage.setItem(
+          'dormFinderSession',
+          JSON.stringify({
+            ...data.user,
+            token: data.token,
+            loginTime: new Date().toISOString(),
+          })
+        );
+        window.location.href = 'pages/user/dashboard.html';
+      } else {
+        alert('❌ ' + (data.message || 'เข้าสู่ระบบล้มเหลว'));
+      }
+    }
+
+    /* ─────────────────────────────────────────────────────
+     * Google Sign-In
+     * ───────────────────────────────────────────────────── */
+    function signInWithGoogle(btn) {
+      btn.disabled = true;
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('profile');
+      provider.addScope('email');
+
+      firebaseAuth
+        .signInWithPopup(provider)
+        .then(handleFirebaseLogin)
+        .catch(function (error) {
+          btn.disabled = false;
+          console.error('Google sign-in error:', error);
+          if (error.code === 'auth/popup-blocked') {
+            alert('⚠️ ป๊อปอัปถูกบล็อก กรุณาอนุญาตป๊อปอัปสำหรับเว็บนี้');
+          } else if (error.code !== 'auth/popup-closed-by-user') {
+            alert('❌ เข้าสู่ระบบด้วย Google ล้มเหลว: ' + error.message);
+          }
+        });
+    }
+
+    /* ─────────────────────────────────────────────────────
+     * Check if already logged in
+     * ───────────────────────────────────────────────────── */
+    (function init() {
+      try {
+        const session = JSON.parse(localStorage.getItem('dormFinderSession'));
+        if (session && session.token) {
+          const dash =
+            session.role === 'admin'
+              ? 'pages/admin/dashboard.html'
+              : 'pages/user/dashboard.html';
+          window.location.href = dash;
+        }
+      } catch (_) {}
+    })();
+  </script>
+</body>
+</html>

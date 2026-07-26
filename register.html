@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dorm Finder — สมัครสมาชิก</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="img/โลโก้-2.png" type="image/png" sizes="16x16">
+  <style>
+    :root {
+      --bg: #F5F0EB;
+      --card-bg: #FFFFFF;
+      --text: #1A1A1A;
+      --text-muted: #6B7280;
+      --accent: #A0785A;
+      --accent-hover: #8B6544;
+      --error: #E74C3C;
+      --success: #27AE60;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 40px rgba(0,0,0,0.06);
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 460px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      box-shadow: var(--shadow);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      transition: var(--transition);
+    }
+    .back-link:hover { color: var(--accent); }
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+    .form-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .alert {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      margin-bottom: 14px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert.show { display: flex; }
+    .alert-error { background: #FDEAEA; color: var(--error); border: 1px solid #F5C6C6; }
+    .alert-success { background: #E8F5E9; color: var(--success); border: 1px solid #C8E6C9; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-group .input-icon {
+      position: absolute;
+      left: 12px;
+      color: #B0A89E;
+      font-size: 0.85rem;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px 10px 36px;
+      border: 1.5px solid #D5CCC2;
+      border-radius: 9px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #FAFAFA;
+      outline: none;
+      transition: var(--transition);
+    }
+    .input-group input:focus {
+      border-color: var(--accent);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(160, 120, 90, 0.12);
+    }
+    .input-group input.error { border-color: var(--error); background: #FFF5F5; }
+    .input-group input::placeholder { color: #B0A89E; }
+    .toggle-pwd {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #B0A89E;
+      padding: 6px;
+      font-size: 0.85rem;
+      z-index: 1;
+    }
+    .toggle-pwd:hover { color: var(--text); }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .gender-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .gender-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 14px;
+      border: 1.5px solid #D5CCC2;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      background: #FAFAFA;
+      flex: 1;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .gender-option:hover { border-color: var(--accent); background: white; }
+    .gender-option.selected { border-color: var(--accent); background: #F0E8DE; }
+    .gender-option input[type="radio"] {
+      accent-color: var(--accent);
+      width: auto;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 17px; height: 17px; margin-top: 2px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .checkbox-group label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .checkbox-group label a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .checkbox-group label a:hover { text-decoration: underline; }
+    .btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 16px rgba(160, 120, 90, 0.30);
+    }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .form-switch {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+    .form-switch a { color: var(--accent); font-weight: 600; text-decoration: none; }
+    .form-switch a:hover { text-decoration: underline; }
+    .section-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin: 6px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> กลับ
+    </a>
+    <h1>สร้างบัญชี</h1>
+    <p class="form-subtitle">กรอกข้อมูลเพื่อสมัครสมาชิก</p>
+
+    <div id="alertMessage" class="alert" role="alert">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="alertText"></span>
+    </div>
+
+    <form id="registerForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regUsername">ชื่อผู้ใช้</label>
+          <div class="input-group">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" id="regUsername" placeholder="Username" autocomplete="username" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="regEmail">อีเมล</label>
+          <div class="input-group">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email" required>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regPassword">รหัสผ่าน</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="regPassword" placeholder="อย่างน้อย 8 ตัว" autocomplete="new-password" required>
+            <button type="button" class="toggle-pwd" onclick="togglePwd('regPassword', this)" aria-label="แสดง/ซ่อน">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="regConfirm">ยืนยันรหัสผ่าน</label>
+          <div class="input-group">
+            <i class="fas fa-check-circle input-icon"></i>
+            <input type="password" id="regConfirm" placeholder="ยืนยันรหัสผ่าน" autocomplete="new-password" required>
+            <button type="button" class="toggle-pwd" onclick="togglePwd('regConfirm', this)" aria-label="แสดง/ซ่อน">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="section-label"><i class="fas fa-info-circle"></i> ข้อมูลเพิ่มเติม</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regPhone">เบอร์โทร</label>
+          <div class="input-group">
+            <i class="fas fa-phone input-icon"></i>
+            <input type="tel" id="regPhone" placeholder="0812345678" pattern="[0-9]{10}" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>เพศ</label>
+          <div class="gender-group" id="genderGroup">
+            <label class="gender-option"><input type="radio" name="gender" value="male" required> ชาย</label>
+            <label class="gender-option"><input type="radio" name="gender" value="female"> หญิง</label>
+            <label class="gender-option"><input type="radio" name="gender" value="other"> อื่น ๆ</label>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" id="regRole" value="user">
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="termsCheckbox" required>
+        <label for="termsCheckbox">
+          โดยการสมัครสมาชิก คุณยอมรับ
+          <a href="#">ข้อกำหนดและเงื่อนไข</a> และ
+          <a href="#">นโยบายความเป็นส่วนตัว</a>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="registerSubmitBtn">
+        <i class="fas fa-user-plus"></i> สมัครสมาชิก
+      </button>
+    </form>
+
+    <div class="form-switch">
+      มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบ</a>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script>
+    'use strict';
+
+    const form      = document.getElementById('registerForm');
+    const alertBox  = document.getElementById('alertMessage');
+    const alertText = document.getElementById('alertText');
+    const submitBtn = document.getElementById('registerSubmitBtn');
+
+    function showAlert(msg, type = 'error') {
+      alertBox.className = `alert alert-${type} show`;
+      alertText.textContent = msg;
+    }
+    function hideAlert() {
+      alertBox.className = 'alert';
+      alertText.textContent = '';
+    }
+
+    function togglePwd(fieldId, btn) {
+      const f = document.getElementById(fieldId);
+      if (!f) return;
+      const icon = btn.querySelector('i');
+      f.type = f.type === 'password' ? 'text' : 'password';
+      icon.className = f.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+    }
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.innerHTML = loading
+        ? '<i class="fas fa-spinner fa-spin"></i> กำลังสมัคร...'
+        : '<i class="fas fa-user-plus"></i> สมัครสมาชิก';
+    }
+
+    function validateForm() {
+      const g = id => document.getElementById(id);
+      const fields = {
+        username: g('regUsername'),
+        email: g('regEmail'),
+        password: g('regPassword'),
+        confirm: g('regConfirm'),
+        phone: g('regPhone'),
+      };
+
+      Object.values(fields).forEach(f => f && f.classList.remove('error'));
+      hideAlert();
+
+      if (!fields.username.value.trim() || fields.username.value.trim().length < 3) {
+        showAlert('⚠️ ชื่อผู้ใช้ต้องอย่างน้อย 3 ตัวอักษร');
+        fields.username.classList.add('error'); fields.username.focus(); return null;
+      }
+      const emailP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailP.test(fields.email.value.trim())) {
+        showAlert('⚠️ รูปแบบอีเมลไม่ถูกต้อง');
+        fields.email.classList.add('error'); fields.email.focus(); return null;
+      }
+      if (!fields.password.value || fields.password.value.length < 8) {
+        showAlert('⚠️ รหัสผ่านต้องอย่างน้อย 8 ตัวอักษร');
+        fields.password.classList.add('error'); fields.password.focus(); return null;
+      }
+      if (fields.password.value !== fields.confirm.value) {
+        showAlert('⚠️ รหัสผ่านไม่ตรงกัน');
+        fields.password.classList.add('error');
+        fields.confirm.classList.add('error');
+        fields.confirm.focus();
+        return null;
+      }
+      if (!/^[0-9]{10}$/.test(fields.phone.value.trim())) {
+        showAlert('⚠️ เบอร์โทรต้องเป็นตัวเลข 10 หลัก');
+        fields.phone.classList.add('error'); fields.phone.focus(); return null;
+      }
+
+      let genderValue = '';
+      document.querySelectorAll('input[name="gender"]').forEach(r => { if (r.checked) genderValue = r.value; });
+      if (!genderValue) {
+        showAlert('⚠️ กรุณาเลือกเพศ');
+        return null;
+      }
+      if (!document.getElementById('termsCheckbox').checked) {
+        showAlert('⚠️ กรุณายอมรับข้อกำหนดและเงื่อนไข');
+        return null;
+      }
+
+      return {
+        username: fields.username.value.trim(),
+        email: fields.email.value.trim(),
+        password: fields.password.value,
+        phone: fields.phone.value.trim(),
+        gender: genderValue,
+        role: 'user',
+      };
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const data = validateForm();
+      if (!data) return;
+
+      setLoading(true);
+      hideAlert();
+
+      try {
+        const result = await API.register(data);
+        if (result.success) {
+          showAlert('✅ สมัครสมาชิกสำเร็จ! กำลังไปยังแดชบอร์ด...', 'success');
+          setTimeout(() => window.location.href = 'pages/user/dashboard.html', 1000);
+        }
+      } catch (err) {
+        console.warn('API register failed, fallback localStorage:', err.message);
+        const users = JSON.parse(localStorage.getItem('dormFinderUsers') || '[]');
+        if (users.some(u => u.email === data.email)) {
+          showAlert('❌ อีเมลนี้ถูกใช้งานไปแล้ว');
+          setLoading(false);
+          return;
+        }
+        users.push(data);
+        localStorage.setItem('dormFinderUsers', JSON.stringify(users));
+        localStorage.setItem('dormFinderSession', JSON.stringify({ ...data, loginTime: new Date().toISOString(), rememberMe: true }));
+        showAlert('✅ สมัครสมาชิกสำเร็จ! (Local)', 'success');
+        setTimeout(() => window.location.href = 'pages/user/dashboard.html', 1000);
+      }
+    }
+
+    // Gender highlight
+    document.querySelectorAll('.gender-option').forEach(opt => {
+      opt.addEventListener('click', function () {
+        document.querySelectorAll('.gender-option').forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+        this.querySelector('input[type="radio"]').checked = true;
+      });
+    });
+
+    form.addEventListener('submit', handleRegister);
+  </script>
+</body>
+</html>
