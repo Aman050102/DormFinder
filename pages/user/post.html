@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ลงประกาศหอพักของคุณ | Dormfinder</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Leaflet.js CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#004ac6",
+                        "primary-fixed": "#dbe1ff",
+                        "primary-container": "#2563eb",
+                        "on-primary": "#ffffff",
+                        "secondary": "#006a61",
+                        "secondary-container": "#86f2e4",
+                        "on-secondary-container": "#006f66",
+                        "surface": "#f7f9fb",
+                        "surface-container": "#eceef0",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-variant": "#e0e3e5",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#434655",
+                        "outline": "#737686",
+                        "outline-variant": "#c3c6d7",
+                        "error": "#ba1a1a"
+                    },
+                    spacing: {
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans Thai', 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        #map { height: 360px; width: 100%; z-index: 10; border-radius: 0.75rem; }
+        .leaflet-touch .leaflet-bar { border: 1px solid #c3c6d7; border-radius: 8px; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <header class="bg-surface sticky top-0 z-50 border-b border-outline-variant">
+        <nav class="flex justify-between items-center w-full px-4 md:px-24 max-w-7xl mx-auto h-16">
+            <div class="flex items-center gap-8">
+                <a class="text-2xl font-bold text-primary tracking-tight" href="user.html">Dormfinder</a>
+                <div class="hidden md:flex gap-6 text-sm font-semibold text-on-surface-variant">
+                    <a class="hover:text-primary transition-colors" href="../../index.html">Search</a>
+                    <a class="hover:text-primary transition-colors" href="#">Support</a>
+                    <a class="hover:text-primary transition-colors" href="#">About</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="../../index.html" class="hidden md:block px-4 py-2 text-sm font-semibold text-primary border border-primary rounded-full hover:bg-primary-fixed transition-all">เข้าสู่ระบบ</a>
+                <a href="user.html" class="text-primary"><span class="material-symbols-outlined">account_circle</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container max-w-5xl mx-auto px-4 py-12">
+        <div class="mb-10 text-center">
+            <h1 class="text-4xl font-bold text-on-surface tracking-tight mb-2">ลงประกาศหอพักของคุณ</h1>
+            <p class="text-on-surface-variant">ลงข้อมูลเพื่อให้นักศึกษาเข้าถึงหอพักของคุณได้ง่ายขึ้น มีประสิทธิภาพ และโปร่งใส</p>
+        </div>
+
+        <section id="contactPreviewCard" class="mb-8 rounded-2xl border border-outline-variant bg-surface-container-low p-6 shadow-sm">
+            <div class="flex items-center gap-2 text-primary mb-3">
+                <span class="material-symbols-outlined">contact_page</span>
+                <h2 class="text-xl font-bold">รายละเอียดการติดต่อ</h2>
+            </div>
+            <p id="contactPreviewMessage" class="text-sm text-on-surface-variant">ยังไม่มีข้อมูลการติดต่อจากโพสต์ที่บันทึกไว้</p>
+            <div id="contactPreviewContent" class="hidden mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="rounded-xl border border-outline-variant bg-white p-4">
+                    <p class="text-xs uppercase tracking-wide text-on-surface-variant">ชื่อหอพัก</p>
+                    <p id="previewName" class="mt-1 font-semibold text-on-surface">-</p>
+                </div>
+                <div class="rounded-xl border border-outline-variant bg-white p-4">
+                    <p class="text-xs uppercase tracking-wide text-on-surface-variant">เบอร์โทร</p>
+                    <p id="previewPhone" class="mt-1 font-semibold text-on-surface">-</p>
+                </div>
+                <div class="rounded-xl border border-outline-variant bg-white p-4">
+                    <p class="text-xs uppercase tracking-wide text-on-surface-variant">LINE</p>
+                    <p id="previewLine" class="mt-1 font-semibold text-on-surface">-</p>
+                </div>
+                <div class="rounded-xl border border-outline-variant bg-white p-4">
+                    <p class="text-xs uppercase tracking-wide text-on-surface-variant">Facebook</p>
+                    <p id="previewFacebook" class="mt-1 font-semibold text-on-surface">-</p>
+                </div>
+                <div class="rounded-xl border border-outline-variant bg-white p-4 md:col-span-2">
+                    <p class="text-xs uppercase tracking-wide text-on-surface-variant">อีเมล</p>
+                    <p id="previewEmail" class="mt-1 font-semibold text-on-surface">-</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm overflow-hidden">
+            <!-- Step Indicators -->
+            <div class="flex border-b border-outline-variant overflow-x-auto whitespace-nowrap">
+                <div class="flex-1 py-4 px-6 text-center border-b-2 border-primary text-primary font-semibold text-sm">
+                    1. ข้อมูลพื้นฐาน
+                </div>
+                <div class="flex-1 py-4 px-6 text-center text-on-surface-variant font-semibold text-sm">
+                    2. รายละเอียดค่าใช้จ่าย
+                </div>
+                <div class="flex-1 py-4 px-6 text-center text-on-surface-variant font-semibold text-sm">
+                    3. รูปภาพและสิ่งอำนวยความสะดวก
+                </div>
+            </div>
+
+            <form id="dormPostForm" class="p-8 space-y-12">
+                
+                <!-- Section 1: Basic Info, Contact & Map Pinning -->
+                <section class="space-y-8">
+                    <div class="flex items-center gap-2 text-primary">
+                        <span class="material-symbols-outlined">home</span>
+                        <h2 class="text-xl font-bold">ข้อมูลทั่วไปและสถานที่ตั้ง</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="text-sm font-semibold text-on-surface">ชื่อหอพัก / อพาร์ทเม้นท์</label>
+                            <input class="w-full p-3 bg-surface border border-outline-variant rounded-lg outline-none focus:ring-2 focus:ring-primary" placeholder="ระบุชื่อหอพักของคุณ" type="text" name="name" required/>
+                        </div>
+
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="text-sm font-semibold text-on-surface">ที่อยู่โดยละเอียด</label>
+                            <textarea class="w-full p-3 bg-surface border border-outline-variant rounded-lg outline-none focus:ring-2 focus:ring-primary" placeholder="บ้านเลขที่, ซอย, ถนน, ตำบล/แขวง..." rows="3" name="location" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Contact Channels Sub-section (เพิ่มช่องทางติดต่อ LINE / Facebook) -->
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-center gap-2 text-primary">
+                            <span class="material-symbols-outlined">contact_phone</span>
+                            <h3 class="text-base font-bold text-on-surface">ช่องทางการติดต่อ</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-surface-container-low p-5 rounded-xl border border-outline-variant">
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm text-primary">call</span> เบอร์โทรศัพท์ติดต่อหลัก
+                                </label>
+                                <input class="w-full p-3 bg-white border border-outline-variant rounded-lg outline-none focus:ring-2 focus:ring-primary" placeholder="0xx-xxx-xxxx" type="tel" name="phone" required/>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm text-secondary">chat</span> LINE ID / ลิงก์ LINE Official
+                                </label>
+                                <input class="w-full p-3 bg-white border border-outline-variant rounded-lg outline-none focus:ring-2 focus:ring-primary" placeholder="@dormline หรือ ID" type="text" name="line_id"/>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm text-primary">public</span> Facebook Page / โปรไฟล์
+                                </label>
+                                <input class="w-full p-3 bg-white border border-outline-variant rounded-lg outline-none focus:ring-2 focus:ring-primary" placeholder="https://facebook.com/yourdorm" type="url" name="facebook"/>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm text-on-surface-variant">mail</span> อีเมลติดต่อ (ถ้ามี)
+                                </label>
+                                <input class="w-full p-3 bg-white border border-outline-variant rounded-lg outline-none focus:ring-2 focus:ring-primary" placeholder="contact@example.com" type="email" name="email"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Pinning Component -->
+                    <div class="space-y-4 pt-2">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                            <label class="text-sm font-semibold text-on-surface flex items-center gap-1">
+                                <span class="material-symbols-outlined text-primary text-base">location_on</span>
+                                ปักหมุดตำแหน่งในแผนที่
+                            </label>
+                            <span class="text-xs text-secondary font-medium flex items-center gap-1 bg-secondary-container/40 px-3 py-1 rounded-full">
+                                <span class="material-symbols-outlined text-xs">info</span>
+                                คลิกบนแผนที่หรือใช้ปุ่ม 'ตำแหน่งปัจจุบัน' เพื่อปักหมุด
+                            </span>
+                        </div>
+
+                        <!-- Map Search & Current Location Controls -->
+                        <div class="flex gap-2">
+                            <div class="relative flex-grow">
+                                <input id="mapSearchInput" type="text" placeholder="ค้นหาชื่อสถานที่ หรือ มหาวิทยาลัยใกล้เคียง..." class="w-full p-2.5 pl-9 bg-surface border border-outline-variant rounded-lg text-sm outline-none focus:ring-2 focus:ring-primary"/>
+                                <span class="material-symbols-outlined text-outline text-sm absolute left-2.5 top-3">search</span>
+                            </div>
+                            <button type="button" id="btnSearchMap" class="bg-surface-container-high px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-surface-variant transition-colors shrink-0">
+                                ค้นหา
+                            </button>
+                            <button type="button" id="btnCurrentLocation" class="bg-primary-fixed text-primary px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary-container hover:text-white transition-colors shrink-0 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">my_location</span>
+                                <span class="hidden sm:inline">ตำแหน่งปัจจุบัน</span>
+                            </button>
+                        </div>
+
+                        <!-- Leaflet Map Container -->
+                        <div class="relative border border-outline-variant rounded-xl overflow-hidden shadow-inner">
+                            <div id="map"></div>
+                        </div>
+
+                        <!-- Hidden Inputs for Lat / Lng Coordinates -->
+                        <input type="hidden" id="latInput" name="lat" value="13.736713"/>
+                        <input type="hidden" id="lngInput" name="lng" value="100.523186"/>
+
+                        <div class="bg-surface-container-low p-3 rounded-lg flex items-center justify-between text-xs text-on-surface-variant">
+                            <div>
+                                พิกัดที่เลือก: <span id="coordinatesDisplay" class="font-bold text-primary">13.736713, 100.523186</span>
+                            </div>
+                            <span class="text-[11px] text-outline">*ระบบจะใช้พิกัดนี้ในการแสดงผลบนแผนที่หน้าค้นหา</span>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="border-outline-variant"/>
+
+                <!-- Section 2: Cost Details -->
+                <section class="space-y-8">
+                    <div class="flex items-center gap-2 text-primary">
+                        <span class="material-symbols-outlined">payments</span>
+                        <h2 class="text-xl font-bold">รายละเอียดค่าใช้จ่าย (ความโปร่งใสเป็นสิ่งสำคัญ)</h2>
+                    </div>
+                    <div class="bg-surface-container-low p-6 rounded-2xl space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface">ค่าเช่ารายเดือน (เริ่มต้น)</label>
+                                <input class="w-full p-3 bg-white border border-outline-variant rounded-lg" placeholder="0.00" type="number" name="price_monthly"/>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface">เงินประกัน (Security Deposit)</label>
+                                <input class="w-full p-3 bg-white border border-outline-variant rounded-lg" placeholder="0.00" type="number" name="deposit"/>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface">จ่ายล่วงหน้า (Months)</label>
+                                <select class="w-full p-3 bg-white border border-outline-variant rounded-lg" name="advance_months">
+                                    <option value="0">ไม่มี (0 เดือน)</option>
+                                    <option value="1">1 เดือน</option>
+                                    <option value="2">2 เดือน</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border-t border-b border-outline-variant">
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">bolt</span> ค่าไฟฟ้า
+                                </label>
+                                <div class="flex items-center gap-3">
+                                    <input class="w-24 p-3 bg-white border border-outline-variant rounded-lg" placeholder="8" type="number" name="electricity_rate"/>
+                                    <span class="text-sm text-on-surface-variant">บาท / หน่วย</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-on-surface flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">water_drop</span> ค่าน้ำประปา
+                                </label>
+                                <div class="flex items-center gap-3">
+                                    <input class="w-24 p-3 bg-white border border-outline-variant rounded-lg" placeholder="18" type="number" name="water_rate"/>
+                                    <span class="text-sm text-on-surface-variant">บาท / หน่วย หรือ เหมาจ่าย</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="border-outline-variant"/>
+
+                <!-- Section 3: Photos & Facilities -->
+                <section class="space-y-12">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        
+                        <!-- Upload Photos Box -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 text-primary">
+                                <span class="material-symbols-outlined">photo_library</span>
+                                <h2 class="text-xl font-bold">รูปภาพหอพัก</h2>
+                            </div>
+                            
+                            <!-- Dropzone Container -->
+                            <div id="dropzone" class="border-2 border-dashed border-outline-variant rounded-2xl p-8 flex flex-col items-center justify-center text-center space-y-4 hover:border-primary transition-colors bg-surface-container-lowest cursor-pointer group">
+                                <input type="file" id="imageInput" multiple accept="image/*" class="hidden"/>
+                                <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-primary text-3xl">cloud_upload</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-on-surface">คลิกเพื่ออัปโหลด หรือลากไฟล์มาวาง</p>
+                                    <p class="text-xs text-on-surface-variant">รองรับไฟล์ JPG, PNG (สูงสุด 5MB ต่อภาพ)</p>
+                                </div>
+                                <button type="button" onclick="document.getElementById('imageInput').click()" class="px-6 py-2 bg-primary text-white font-semibold rounded-full text-sm hover:opacity-90 transition-opacity">
+                                    เลือกรูปภาพ
+                                </button>
+                            </div>
+
+                            <!-- Image Preview Container -->
+                            <div id="imagePreviewContainer" class="grid grid-cols-3 gap-3 pt-2"></div>
+                        </div>
+
+                        <!-- Checklist Facilities -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 text-primary">
+                                <span class="material-symbols-outlined">checklist</span>
+                                <h2 class="text-xl font-bold">สิ่งอำนวยความสะดวก</h2>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center gap-3 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" name="facilities" value="wifi" class="w-5 h-5 rounded text-primary focus:ring-primary border-outline"/>
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm text-secondary">wifi</span>
+                                        <span class="text-sm font-medium">Free Wi-Fi</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" name="facilities" value="aircon" class="w-5 h-5 rounded text-primary focus:ring-primary border-outline"/>
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm text-secondary">ac_unit</span>
+                                        <span class="text-sm font-medium">เครื่องปรับอากาศ</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" name="facilities" value="fitness" class="w-5 h-5 rounded text-primary focus:ring-primary border-outline"/>
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm text-secondary">fitness_center</span>
+                                        <span class="text-sm font-medium">ฟิตเนส</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" name="facilities" value="parking" class="w-5 h-5 rounded text-primary focus:ring-primary border-outline"/>
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm text-secondary">local_parking</span>
+                                        <span class="text-sm font-medium">ที่จอดรถ</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" name="facilities" value="pool" class="w-5 h-5 rounded text-primary focus:ring-primary border-outline"/>
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm text-secondary">pool</span>
+                                        <span class="text-sm font-medium">สระว่ายน้ำ</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" name="facilities" value="security" class="w-5 h-5 rounded text-primary focus:ring-primary border-outline"/>
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm text-secondary">security</span>
+                                        <span class="text-sm font-medium">รปภ. 24 ชม.</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" name="facilities" value="keycard" class="w-5 h-5 rounded text-primary focus:ring-primary border-outline"/>
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm text-secondary">badge</span>
+                                        <span class="text-sm font-medium">ระบบคีย์การ์ด</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+                                    <input type="checkbox" name="facilities" value="laundry" class="w-5 h-5 rounded text-primary focus:ring-primary border-outline"/>
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-sm text-secondary">local_laundry_service</span>
+                                        <span class="text-sm font-medium">เครื่องซักผ้าหยอดเหรียญ</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <div class="p-8 bg-surface-container-high flex justify-between items-center border-t border-outline-variant -mx-8 -mb-8">
+                    <p class="text-xs text-on-surface-variant">สามารถแก้ไขข้อมูลได้ตลอดเวลาหลังจากลงประกาศแล้ว</p>
+                    <div class="flex gap-4">
+                        <button class="px-8 py-3 font-bold border border-outline-variant rounded-full hover:bg-surface-container-low" type="button">ดูตัวอย่าง</button>
+                        <button class="px-10 py-3 font-bold text-white bg-primary rounded-full hover:opacity-90 transition-all" type="submit">ลงประกาศเลย</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 px-6 md:px-24 bg-surface-container-low border-t border-outline-variant mt-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="md:col-span-2 space-y-4">
+                <a class="text-2xl font-bold text-primary tracking-tight" href="index.html">Dormfinder</a>
+                <p class="text-sm text-on-surface-variant max-w-md">© 2024 Dormfinder. Providing student housing with zero hidden fees.</p>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-bold text-on-surface">บริการ</h4>
+                <ul class="space-y-2 text-sm text-on-surface-variant">
+                    <li><a class="hover:text-primary transition-colors" href="index.html">ค้นหาหอพัก</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="post.html">Landlord Portal</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet.js JavaScript for Map Pinning -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <script>
+        // --- 1. Map Pinning Logic ---
+        const defaultLat = 13.736713;
+        const defaultLng = 100.523186;
+
+        const map = L.map('map').setView([defaultLat, defaultLng], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+        marker.bindPopup("<b>ตำแหน่งหอพักของคุณ</b><br>คลิกลากเพื่อปรับตำแหน่งได้").openPopup();
+
+        function updateCoordinates(lat, lng) {
+            const formattedLat = parseFloat(lat).toFixed(6);
+            const formattedLng = parseFloat(lng).toFixed(6);
+            
+            document.getElementById('latInput').value = formattedLat;
+            document.getElementById('lngInput').value = formattedLng;
+            document.getElementById('coordinatesDisplay').innerText = `${formattedLat}, ${formattedLng}`;
+        }
+
+        marker.on('dragend', function () {
+            const position = marker.getLatLng();
+            updateCoordinates(position.lat, position.lng);
+        });
+
+        map.on('click', function (e) {
+            marker.setLatLng([e.latlng.lat, e.latlng.lng]);
+            updateCoordinates(e.latlng.lat, e.latlng.lng);
+        });
+
+        document.getElementById('btnSearchMap').addEventListener('click', function() {
+            const query = document.getElementById('mapSearchInput').value;
+            if (!query) return;
+
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const lat = parseFloat(data[0].lat);
+                        const lng = parseFloat(data[0].lon);
+                        map.setView([lat, lng], 16);
+                        marker.setLatLng([lat, lng]);
+                        updateCoordinates(lat, lng);
+                    } else {
+                        alert('ไม่พบสถานที่ดังกล่าว กรุณาลองค้นหาด้วยคำอื่น');
+                    }
+                });
+        });
+
+        document.getElementById('btnCurrentLocation').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    map.setView([lat, lng], 16);
+                    marker.setLatLng([lat, lng]);
+                    updateCoordinates(lat, lng);
+                });
+            }
+        });
+
+        // --- 2. Multiple Image Upload Preview Logic ---
+        const imageInput = document.getElementById('imageInput');
+        const dropzone = document.getElementById('dropzone');
+        const previewContainer = document.getElementById('imagePreviewContainer');
+        let selectedFiles = [];
+
+        imageInput.addEventListener('change', function(e) {
+            handleFiles(e.target.files);
+        });
+
+        // Drag & Drop Events
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('border-primary', 'bg-primary-fixed/20');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('border-primary', 'bg-primary-fixed/20');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-primary', 'bg-primary-fixed/20');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                selectedFiles.push(file);
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'relative group aspect-square rounded-xl overflow-hidden border border-outline-variant shadow-sm';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-full object-cover"/>
+                        <button type="button" onclick="removeImage(this, '${file.name}')" class="absolute top-1 right-1 bg-black/60 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error">
+                            <span class="material-symbols-outlined text-xs">close</span>
+                        </button>
+                    `;
+                    previewContainer.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeImage(btn, fileName) {
+            selectedFiles = selectedFiles.filter(f => f.name !== fileName);
+            btn.parentElement.remove();
+        }
+
+        // --- 3. Save & Show Contact Details from the owner post ---
+        const contactPreviewCard = document.getElementById('contactPreviewCard');
+        const contactPreviewMessage = document.getElementById('contactPreviewMessage');
+        const contactPreviewContent = document.getElementById('contactPreviewContent');
+        const storageKey = 'dormfinderOwnerPost';
+
+        function renderContactPreview(data) {
+            if (!data || !data.phone) {
+                contactPreviewMessage.classList.remove('hidden');
+                contactPreviewContent.classList.add('hidden');
+                contactPreviewMessage.textContent = 'ยังไม่มีข้อมูลการติดต่อจากโพสต์ที่บันทึกไว้';
+                return;
+            }
+
+            contactPreviewMessage.classList.add('hidden');
+            contactPreviewContent.classList.remove('hidden');
+            document.getElementById('previewName').textContent = data.name || '-';
+            document.getElementById('previewPhone').textContent = data.phone || '-';
+            document.getElementById('previewLine').textContent = data.line_id || '-';
+            document.getElementById('previewFacebook').textContent = data.facebook || '-';
+            document.getElementById('previewEmail').textContent = data.email || '-';
+        }
+
+        function loadSavedContactData() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(storageKey));
+                if (saved) {
+                    renderContactPreview(saved);
+                    const formElements = document.getElementById('dormPostForm').elements;
+                    Object.entries(saved).forEach(([key, value]) => {
+                        const field = formElements[key];
+                        if (field) {
+                            if (field.type === 'checkbox') {
+                                field.checked = Array.isArray(value) ? value.includes(field.value) : false;
+                            } else {
+                                field.value = value;
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Unable to load saved contact details', error);
+            }
+        }
+
+        document.getElementById('dormPostForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            data.facilities = Array.from(document.querySelectorAll('input[name="facilities"]:checked')).map((item) => item.value);
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            renderContactPreview(data);
+            contactPreviewCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            contactPreviewMessage.textContent = 'บันทึกข้อมูลการติดต่อเรียบร้อยแล้ว';
+            contactPreviewMessage.classList.remove('hidden');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedContactData();
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('view') === 'contact') {
+                contactPreviewCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
+</body>
+</html>

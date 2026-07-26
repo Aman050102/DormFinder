@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dormfinder - ค้นหาหอพักที่ใช่ ในราคาที่โปร่งใส</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#004ac6",
+                        "primary-fixed": "#dbe1ff",
+                        "primary-container": "#2563eb",
+                        "on-primary": "#ffffff",
+                        "secondary": "#006a61",
+                        "secondary-container": "#86f2e4",
+                        "on-secondary-container": "#006f66",
+                        "surface": "#f7f9fb",
+                        "surface-container": "#eceef0",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-variant": "#e0e3e5",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#434655",
+                        "outline": "#737686",
+                        "outline-variant": "#c3c6d7",
+                        "tertiary": "#784b00",
+                        "tertiary-container": "#ffddb8",
+                        "on-tertiary-container": "#996100",
+                        "error": "#ba1a1a"
+                    },
+                    spacing: {
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "stack-lg": "24px"
+                    },
+                    fontFamily: {
+                        "sans": ["Noto Sans Thai", "Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans Thai', 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        /* Style สำหรับปุ่มที่ถูกกดเลือก (Saved / Favorite Active) */
+        .favorite-btn.active .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            color: #ba1a1a;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex flex-col min-h-screen">
+    <!-- TopNavBar -->
+    <header class="bg-surface sticky top-0 z-50 border-b border-outline-variant">
+        <div class="flex justify-between items-center w-full px-margin-mobile md:px-gutter max-w-container-max mx-auto h-16">
+            <div class="flex items-center gap-8">
+                <a class="text-2xl font-bold text-primary tracking-tight" href="user.html">Dormfinder</a>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a class="text-sm font-semibold text-primary border-b-2 border-primary pb-1" href="../../index.html">Search</a>
+                    <a class="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+                    <a class="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors" href="#">About</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="post.html" class="hidden md:block bg-primary text-on-primary px-6 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-all">
+                    Post your dorm
+                </a>
+                <a href="user.html" class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative h-[400px] md:h-[500px] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDJdG8R6M4NtttZPe96Ov_hPBCswciGqdD7ps3Q4lV8U5pJFZPuL2-6O1wPPKNGRSj12pwn3X1Gd87LC8jsNugmMgvv6VtUflssTueWRRBPn59vrNCaGVg5dZ8Su4g0JW2tBN4DVQREoJkwZJHGMRuC38yzy4T3X3OT_CTSpko7Qr7lrVhDKxGhLNHcsZvbAcLL_YCa6Bk6qWXP3iU2b-CU5FFr7N2DK0Bo1tW1YwOGY0VzVOG18CEkBYedhbBlynWu3kuwtJL6fQ')"></div>
+                <div class="absolute inset-0 bg-black/30"></div>
+            </div>
+            <div class="relative z-10 text-center px-4 max-w-4xl">
+                <h1 class="text-white font-bold text-3xl md:text-5xl mb-6 drop-shadow-lg leading-tight">
+                    ค้นหาหอพักที่ใช่ ในราคาที่โปร่งใส <br class="hidden md:block"/>ไม่มีค่าธรรมเนียมแอบแฝง
+                </h1>
+                <div class="bg-white p-2 rounded-full shadow-xl flex items-center max-w-2xl mx-auto border border-outline-variant">
+                    <div class="flex-grow flex items-center px-4">
+                        <span class="material-symbols-outlined text-outline">search</span>
+                        <input class="w-full border-none focus:ring-0 text-on-surface bg-transparent text-sm pl-2 outline-none" placeholder="ค้นหาทำเล มหาวิทยาลัย หรือชื่อหอพัก..." type="text"/>
+                    </div>
+                    <button class="bg-primary text-on-primary px-8 py-3 rounded-full text-sm font-semibold hover:opacity-90 transition-all">
+                        ค้นหา
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Filters Section -->
+        <section class="sticky top-16 z-40 bg-surface/90 backdrop-blur-md border-b border-outline-variant py-4 px-margin-mobile md:px-gutter">
+            <div class="max-w-container-max mx-auto flex gap-3 overflow-x-auto hide-scrollbar items-center">
+                <button class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg text-sm font-semibold hover:bg-surface-container shrink-0">
+                    <span class="material-symbols-outlined text-sm">filter_list</span> ตัวกรอง
+                </button>
+                <div class="h-6 w-px bg-outline-variant shrink-0"></div>
+                <button class="px-4 py-2 border border-outline-variant rounded-lg text-sm font-semibold hover:bg-surface-container shrink-0">ช่วงราคา</button>
+                <button class="px-4 py-2 border border-outline-variant rounded-lg text-sm font-semibold hover:bg-surface-container shrink-0">ประเภทห้อง</button>
+                <button class="px-4 py-2 border border-outline-variant rounded-lg text-sm font-semibold hover:bg-surface-container shrink-0">สิ่งอำนวยความสะดวก</button>
+                <button class="px-4 py-2 border border-outline-variant rounded-lg text-sm font-semibold hover:bg-surface-container shrink-0">สัตว์เลี้ยงเข้าได้</button>
+                <button class="px-4 py-2 border border-outline-variant rounded-lg text-sm font-semibold hover:bg-surface-container shrink-0">ใกล้รถไฟฟ้า</button>
+            </div>
+        </section>
+
+        <!-- Dorm Cards Grid -->
+        <section class="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-stack-lg">
+            <div class="flex justify-between items-end mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-on-surface">หอพักยอดนิยม</h2>
+                    <p class="text-sm text-on-surface-variant">พบ 128 รายการในพื้นที่กรุงเทพฯ</p>
+                </div>
+                <button class="hidden md:flex items-center gap-1 text-primary text-sm font-semibold">
+                    ดูแผนที่ <span class="material-symbols-outlined text-sm">map</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+                <!-- Dorm Card 1 -->
+                <div class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div class="relative h-56 overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-Qau5xk5TFZQeDxzTi4kivHL8PmUchSQ3sLh2VvUzOS3v4L9dqMYIGpu36oHwmb7Z95aYgLZWia9HBE1xV-oepZSoR52wR7duc9BIoQJFn8ggi7pBCmNxftt1zyKYguI7PWeXd1mksALmOagEl3AxP04tF46Li2Dzspu3HbazpGRMQy2Q2L3vOJW2L2u-t7i8v6eAI_II5o23MOy039tuO_TfbYTHt7v8UCMybGvRkEnLRvqyb68w3HaRLSSwl53R7PLjWrkCUQ" alt="Dorm Image"/>
+                        <!-- ปุ่มกดใจ / Saved (ใส่ Class และ onclick) -->
+                        <button onclick="toggleFavorite(this)" class="favorite-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full text-on-surface-variant hover:text-error active:scale-90 transition-all">
+                            <span class="material-symbols-outlined">favorite</span>
+                        </button>
+                        <div class="absolute bottom-3 left-3">
+                            <span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-semibold">แนะนำ</span>
+                        </div>
+                    </div>
+                    <div class="p-4 space-y-3">
+                        <a href="detail.html" class="block space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div class="space-y-1">
+                                    <h3 class="font-semibold text-lg text-on-surface">เดอะ พรีเมียร์ เรสซิเดนซ์</h3>
+                                    <div class="flex items-center gap-1 text-on-surface-variant text-sm">
+                                        <span class="material-symbols-outlined text-sm">location_on</span> สามย่าน, กรุงเทพฯ
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    <span class="text-sm font-semibold">4.8</span>
+                                    <span class="text-on-surface-variant text-xs">(124)</span>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-2xl font-bold text-primary">฿6,500</span>
+                                <span class="text-on-surface-variant text-sm">/เดือน</span>
+                            </div>
+                            <div class="bg-surface-container-low p-2 rounded-lg flex justify-between items-center text-xs">
+                                <div class="flex items-center gap-1 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">bolt</span> ไฟ: <span class="font-bold text-on-surface">7 THB/หน่วย</span>
+                                </div>
+                                <div class="flex items-center gap-1 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">water_drop</span> น้ำ: <span class="font-bold text-on-surface">18 THB/หน่วย</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dorm Card 2 -->
+                <div class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div class="relative h-56 overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnI57VZJinl81PTRtTCKuZo-KKMmNfOWaGaA-DtvqHnj54vIa3KEOpwsLXzCAZ7zncwWniC3cDFvksdDWiKE5_J2Q7d7ee05YHfUyLXYP65UY8obqbLjBnM35fzCBDqsOKrH7atMaxY1H70nAXp5tg155-BU-INN-u2AnVk_38PDycljUWVcTvf4epiojqn9Akx3m4fweTfRHMNRtL12jBkwD4kAyY8-RiHmRoetoA0HOa3hgNkvSveTMOCPstpXXaME2FU1PT3w" alt="Dorm Image"/>
+                        <!-- ปุ่มกดใจ / Saved -->
+                        <button onclick="toggleFavorite(this)" class="favorite-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full text-on-surface-variant hover:text-error active:scale-90 transition-all">
+                            <span class="material-symbols-outlined">favorite</span>
+                        </button>
+                    </div>
+                    <div class="p-4 space-y-3">
+                        <a href="detail.html" class="block space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div class="space-y-1">
+                                    <h3 class="font-semibold text-lg text-on-surface">เมโทร ลอฟท์ พหลฯ</h3>
+                                    <div class="flex items-center gap-1 text-on-surface-variant text-sm">
+                                        <span class="material-symbols-outlined text-sm">location_on</span> พหลโยธิน 34, กรุงเทพฯ
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    <span class="text-sm font-semibold">4.5</span>
+                                    <span class="text-on-surface-variant text-xs">(86)</span>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-2xl font-bold text-primary">฿5,200</span>
+                                <span class="text-on-surface-variant text-sm">/เดือน</span>
+                            </div>
+                            <div class="bg-surface-container-low p-2 rounded-lg flex justify-between items-center text-xs">
+                                <div class="flex items-center gap-1 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">bolt</span> ไฟ: <span class="font-bold text-on-surface">8 THB/หน่วย</span>
+                                </div>
+                                <div class="flex items-center gap-1 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">water_drop</span> น้ำ: <span class="font-bold text-on-surface">20 THB/หน่วย</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-center">
+                <button class="bg-surface-container-high text-on-surface px-8 py-3 rounded-full text-sm font-semibold hover:bg-surface-variant transition-colors">
+                    ดูเพิ่มเติม
+                </button>
+            </div>
+        </section>
+
+        <!-- Trust Section -->
+        <section class="bg-primary-fixed text-on-primary-fixed py-stack-lg my-stack-lg">
+            <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="space-y-4">
+                    <span class="material-symbols-outlined text-4xl">verified_user</span>
+                    <h3 class="font-bold text-lg">ข้อมูลตรวจสอบแล้ว</h3>
+                    <p class="text-sm opacity-80">ทุกหอพักผ่านการตรวจสอบทีมงานเพื่อให้แน่ใจว่าข้อมูลราคาถูกต้อง</p>
+                </div>
+                <div class="space-y-4">
+                    <span class="material-symbols-outlined text-4xl">payments</span>
+                    <h3 class="font-bold text-lg">ราคาโปร่งใส</h3>
+                    <p class="text-sm opacity-80">แสดงค่าน้ำ ค่าไฟ อย่างชัดเจนตั้งแต่วันแรก ไม่มีแอบแฝง</p>
+                </div>
+                <div class="space-y-4">
+                    <span class="material-symbols-outlined text-4xl">support_agent</span>
+                    <h3 class="font-bold text-lg">ช่วยเหลือตลอด 24 ชม.</h3>
+                    <p class="text-sm opacity-80">เรามีทีมงานคอยช่วยเหลือหากคุณพบปัญหา</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface-container-low text-on-surface-variant py-stack-lg px-margin-mobile md:px-gutter mt-auto border-t border-outline-variant mb-16 md:mb-0">
+        <div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-2">
+                <h2 class="text-2xl font-bold text-primary mb-4">Dormfinder</h2>
+                <p class="text-sm max-w-md">เราช่วยให้นิสิตและนักศึกษาสามารถหาที่พักที่ปลอดภัย โปร่งใส และเหมาะสมกับงบประมาณได้ง่ายที่สุด</p>
+            </div>
+            <div>
+                <h4 class="text-sm text-on-surface font-bold mb-4">ลิงก์สำคัญ</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a class="hover:underline" href="#">Terms of Service</a></li>
+                    <li><a class="hover:underline" href="#">Privacy Policy</a></li>
+                    <li><a class="hover:underline text-primary font-bold" href="post.html">Landlord Portal</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm text-on-surface font-bold mb-4">ติดต่อเรา</h4>
+                <p class="text-sm">อีเมล: support@dormfinder.co.th</p>
+                <p class="text-sm">โทร: 02-XXX-XXXX</p>
+            </div>
+        </div>
+        <div class="max-w-container-max mx-auto mt-12 pt-6 border-t border-outline-variant text-center md:text-left">
+            <p class="text-xs">© 2024 Dormfinder. Providing student housing with zero hidden fees.</p>
+        </div>
+    </footer>
+
+    <!-- Script ควบคุมการกดปุ่มหัวใจ (Toggle Favorite State) -->
+    <script>
+        function toggleFavorite(btn) {
+            btn.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
