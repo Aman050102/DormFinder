@@ -1,54 +1,48 @@
 /* =============================================================
-   DORM FINDER — Auth System Styles (Refined)
+   DORM FINDER — Auth System Styles (Cross-platform)
+   รองรับ Windows + Mac Desktop
    ============================================================= */
 
-/* ─── Font ──────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
 
 /* ─── Variables ─────────────────────────────────────────── */
 :root {
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
   --bg-page: #F7F5F2;
   --bg-left: #F0EAE2;
   --bg-right: #FFFFFF;
   --bg-input: #FAFAF9;
-  --bg-surface: #FFFFFF;
 
   --text-primary: #1C1C1E;
   --text-secondary: #6B7280;
   --text-muted: #9CA3AF;
-  --text-placeholder: #C4C4C6;
+  --text-placeholder: #B0B0B2;
 
   --border: #E5E0DB;
-  --border-light: #F0EDE8;
   --border-focus: #A0785A;
 
   --accent: #A0785A;
   --accent-hover: #8B6548;
   --accent-light: #F3ECE4;
 
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
-  --shadow: 0 4px 24px rgba(28,28,30,0.06);
-  --shadow-lg: 0 8px 40px rgba(28,28,30,0.08);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 4px 20px rgba(28,28,30,0.05);
+  --shadow-lg: 0 8px 32px rgba(28,28,30,0.07);
 
-  --radius: 20px;
-  --radius-lg: 16px;
-  --radius-md: 10px;
   --radius-sm: 8px;
-  --radius-xs: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius: 20px;
 
-  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.2s ease;
 
   /* Role */
   --user-color: #4E9370;
   --user-bg: #EAF5EF;
-  --user-light: #D4EADE;
   --admin-color: #4A6FA5;
   --admin-bg: #EAF0F6;
-  --admin-light: #D4DFEE;
 
-  /* Status */
   --error: #DC2626;
   --error-bg: #FEF2F2;
   --success: #16A34A;
@@ -68,8 +62,8 @@ body {
   align-items: center;
   justify-content: center;
   line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Mac: subtle smoothing  |  Windows: no thin text */
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -84,14 +78,14 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 .auth-container {
   display: flex;
   width: 100%;
-  max-width: 1160px;
+  max-width: 1120px;
   min-height: 100vh;
   background: var(--bg-right);
 }
 
-/* ─── Left Panel ────────────────────────────────────────── */
+/* ─── Left Panel (Brand) ────────────────────────────────── */
 .auth-left {
-  flex: 1;
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,7 +101,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 25% 40%, rgba(160,120,90,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 25% 40%, rgba(160,120,90,0.07) 0%, transparent 60%),
     radial-gradient(ellipse at 75% 60%, rgba(160,120,90,0.04) 0%, transparent 50%);
   pointer-events: none;
 }
@@ -116,25 +110,24 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   text-align: center;
   position: relative;
   z-index: 1;
-  max-width: 320px;
+  max-width: 300px;
 }
 
 .brand-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 20px;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
   background: var(--accent-light);
-  border-radius: 18px;
-  font-size: 1.75rem;
+  border-radius: 16px;
   color: var(--accent);
-  box-shadow: 0 2px 12px rgba(160,120,90,0.10);
+  box-shadow: 0 2px 10px rgba(160,120,90,0.08);
 }
 
 .brand h1 {
-  font-size: 1.85rem;
+  font-size: clamp(1.4rem, 2.2vw, 1.8rem);
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 6px;
@@ -143,39 +136,38 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 
 .brand p {
   color: var(--text-secondary);
-  font-size: 0.92rem;
-  line-height: 1.7;
+  font-size: clamp(0.82rem, 1.1vw, 0.92rem);
+  line-height: 1.65;
 }
 
 .brand .tagline {
   display: inline-block;
-  margin-top: 16px;
-  padding: 5px 18px;
+  margin-top: 14px;
+  padding: 4px 16px;
   background: var(--accent-light);
   color: var(--accent-hover);
   border-radius: 20px;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
 }
 
-/* ─── Right Panel ───────────────────────────────────────── */
+/* ─── Right Panel (Form) ────────────────────────────────── */
 .auth-right {
-  flex: 1;
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 56px 64px;
+  padding: 48px 56px;
   background: var(--bg-right);
 }
 
 .form-wrapper {
   width: 100%;
-  max-width: 424px;
+  max-width: 420px;
 }
 
 .form-wrapper h2 {
-  font-size: 1.6rem;
+  font-size: clamp(1.3rem, 2vw, 1.55rem);
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
@@ -184,14 +176,14 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 
 .form-subtitle {
   color: var(--text-secondary);
-  font-size: 0.88rem;
-  margin-bottom: 28px;
+  font-size: 0.87rem;
+  margin-bottom: 26px;
   line-height: 1.5;
 }
 
 /* ─── Alert ─────────────────────────────────────────────── */
 .alert {
-  padding: 11px 15px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
   font-size: 0.83rem;
   margin-bottom: 18px;
@@ -201,7 +193,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   line-height: 1.5;
 }
 .alert.show { display: flex; }
-.alert i { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
+.alert svg { flex-shrink: 0; }
 .alert-error {
   background: var(--error-bg);
   color: var(--error);
@@ -216,62 +208,57 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 /* ─── Role Toggle (Login) ───────────────────────────────── */
 .role-toggle {
   display: flex;
-  background: #F2EFEC;
+  background: #F0EDEA;
   border-radius: var(--radius-md);
-  padding: 4px;
-  margin-bottom: 22px;
+  padding: 3px;
+  margin-bottom: 20px;
   gap: 2px;
 }
 
 .role-btn {
   flex: 1;
-  padding: 11px 16px;
+  padding: 10px 14px;
   border: none;
   background: transparent;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.88rem;
+  font-size: 0.87rem;
   font-weight: 600;
   color: var(--text-secondary);
   transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
   font-family: var(--font);
-  white-space: nowrap;
 }
 
-.role-btn i { font-size: 0.9rem; }
+.role-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 
 .role-btn.active[data-role="user"] {
   background: var(--user-color);
   color: #fff;
-  box-shadow: 0 1px 6px rgba(78,147,112,0.20);
+  box-shadow: 0 1px 4px rgba(78,147,112,0.18);
 }
 .role-btn.active[data-role="admin"] {
   background: var(--admin-color);
   color: #fff;
-  box-shadow: 0 1px 6px rgba(74,111,165,0.20);
+  box-shadow: 0 1px 4px rgba(74,111,165,0.18);
 }
-.role-btn:not(.active):hover {
-  color: var(--text-primary);
-  background: rgba(0,0,0,0.03);
-}
+.role-btn:not(.active):hover { color: var(--text-primary); }
 
 /* ─── Role Indicator ────────────────────────────────────── */
 .role-indicator {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 14px;
+  gap: 5px;
+  padding: 3px 13px;
   border-radius: 20px;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  margin-bottom: 18px;
-  letter-spacing: 0.01em;
+  margin-bottom: 16px;
 }
-.role-indicator i { font-size: 0.8rem; }
+.role-indicator svg { width: 13px; height: 13px; }
 .role-indicator.user { background: var(--user-bg); color: var(--user-color); }
 .role-indicator.admin { background: var(--admin-bg); color: var(--admin-color); }
 
@@ -280,15 +267,15 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .role-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 22px 14px 18px;
+  gap: 7px;
+  padding: 20px 12px 16px;
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   cursor: pointer;
@@ -300,19 +287,19 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 .role-card:hover {
   border-color: var(--accent);
   background: #FCFAF8;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .role-card .card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
   transition: var(--transition);
 }
+.role-card .card-icon svg { width: 20px; height: 20px; }
 
 .role-card.card-user .card-icon { background: var(--user-bg); color: var(--user-color); }
 .role-card.card-admin .card-icon { background: var(--admin-bg); color: var(--admin-color); }
@@ -325,46 +312,49 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   border-color: var(--admin-color);
   background: var(--admin-bg);
 }
-
 .role-card.selected-user .card-icon { background: var(--user-color); color: #fff; }
 .role-card.selected-admin .card-icon { background: var(--admin-color); color: #fff; }
 
-.role-card h3 { font-size: 0.93rem; font-weight: 700; color: var(--text-primary); }
+.role-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); }
 .role-card p {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   color: var(--text-secondary);
   line-height: 1.45;
-  max-width: 140px;
 }
 
 /* ─── Form Group ────────────────────────────────────────── */
-.form-group { margin-bottom: 18px; }
+.form-group { margin-bottom: 16px; }
 
 .form-group label {
   display: block;
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 /* ─── Input Group ───────────────────────────────────────── */
-.input-group { position: relative; display: flex; align-items: center; }
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
 .input-group .input-icon {
   position: absolute;
-  left: 13px;
+  left: 12px;
   color: var(--text-muted);
-  font-size: 0.9rem;
   pointer-events: none;
   transition: var(--transition);
   z-index: 1;
+  width: 17px;
+  height: 17px;
 }
 
 .input-group input,
 .input-group select {
   width: 100%;
-  padding: 11px 13px 11px 40px;
+  padding: 10px 12px 10px 38px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
@@ -381,38 +371,38 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239CA3AF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
-  padding-right: 36px;
+  padding-right: 34px;
 }
 
 .input-group input:focus,
 .input-group select:focus {
   border-color: var(--border-focus);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(160,120,90,0.10);
+  box-shadow: 0 0 0 3px rgba(160,120,90,0.08);
 }
 
 .input-group input:focus ~ .input-icon,
 .input-group select:focus ~ .input-icon { color: var(--accent); }
 
 .input-group input::placeholder { color: var(--text-placeholder); }
-.input-group.no-icon input { padding-left: 13px; }
+.input-group.no-icon input { padding-left: 12px; }
 
-/* Password toggle */
+/* Toggle password */
 .toggle-pwd {
   position: absolute;
-  right: 9px;
+  right: 8px;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-muted);
-  padding: 6px;
-  font-size: 0.9rem;
+  padding: 5px;
   transition: var(--transition);
   z-index: 1;
   display: flex;
+  line-height: 0;
 }
 .toggle-pwd:hover { color: var(--text-primary); }
-.toggle-pwd:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.toggle-pwd svg { width: 17px; height: 17px; }
 
 .input-group input.error {
   border-color: var(--error);
@@ -420,8 +410,12 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 .input-group input.error ~ .input-icon { color: var(--error); }
 
-/* ─── Form Row ──────────────────────────────────────────── */
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+/* ─── Form Row (2-col) ──────────────────────────────────── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
 
 /* ─── Gender ────────────────────────────────────────────── */
 .gender-group { display: flex; gap: 10px; }
@@ -432,7 +426,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   justify-content: center;
   gap: 6px;
   flex: 1;
-  padding: 9px 12px;
+  padding: 8px 12px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -465,13 +459,13 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 .checkbox-group {
   display: flex;
   align-items: flex-start;
-  gap: 11px;
-  margin-bottom: 22px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .checkbox-group input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   margin-top: 3px;
   accent-color: var(--accent);
   flex-shrink: 0;
@@ -490,7 +484,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 8px;
 }
@@ -498,7 +492,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 .remember-me {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   font-size: 0.84rem;
   color: var(--text-secondary);
   cursor: pointer;
@@ -506,8 +500,8 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 
 .remember-me input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   accent-color: var(--accent);
   cursor: pointer;
 }
@@ -526,11 +520,11 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 20px;
+  gap: 7px;
+  padding: 11px 20px;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   font-family: var(--font);
   cursor: pointer;
@@ -547,25 +541,14 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 .btn-dark:hover {
   background: #3A3A3C;
-  box-shadow: 0 2px 12px rgba(28,28,30,0.12);
-}
-
-.btn-accent {
-  background: var(--accent);
-  color: #fff;
-}
-.btn-accent:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 2px 12px rgba(160,120,90,0.25);
+  box-shadow: 0 2px 10px rgba(28,28,30,0.10);
 }
 
 .btn-ghost {
   background: var(--accent-light);
   color: var(--accent-hover);
 }
-.btn-ghost:hover {
-  background: #E8DED4;
-}
+.btn-ghost:hover { background: #E8DED4; }
 
 .btn-outline {
   background: transparent;
@@ -585,57 +568,87 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-size: 0.86rem;
   color: var(--text-secondary);
 }
+.form-switch a { font-weight: 600; }
 
-.form-switch a {
-  font-weight: 600;
-}
-
-/* ─── Scrollbar ─────────────────────────────────────────── */
+/* ─── Scrollbar (cross‑platform) ──────────────────────────── */
 .form-wrapper.scrollable {
   max-height: 100vh;
   overflow-y: auto;
-  padding-right: 6px;
+  scrollbar-width: thin;           /* Firefox */
+  scrollbar-color: var(--border) transparent; /* Firefox */
 }
-.form-wrapper.scrollable::-webkit-scrollbar { width: 4px; }
+.form-wrapper.scrollable::-webkit-scrollbar { width: 5px; }
 .form-wrapper.scrollable::-webkit-scrollbar-track { background: transparent; }
-.form-wrapper.scrollable::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.form-wrapper.scrollable::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+}
+.form-wrapper.scrollable::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
 
-/* ─── Section Title (Address, etc.) ──────────────────────── */
+/* ─── Section Title ─────────────────────────────────────── */
 .section-title {
   font-size: 0.83rem;
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 12px;
   padding-top: 4px;
-  letter-spacing: 0.01em;
 }
-.section-title i { margin-right: 6px; }
+.section-title svg { vertical-align: middle; margin-right: 4px; }
 
-/* ─── Select Role Label ─────────────────────────────────── */
+/* ─── Role Select Label ─────────────────────────────────── */
 .role-select-label {
   font-size: 0.83rem;
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 10px;
-  letter-spacing: 0.01em;
 }
-.role-select-label i { margin-right: 6px; }
+.role-select-label svg { vertical-align: middle; margin-right: 4px; }
 
 /* ─── Auth Header ───────────────────────────────────────── */
-.auth-header { margin-bottom: 22px; }
+.auth-header { margin-bottom: 20px; }
 .auth-header h2 { margin-bottom: 2px; }
 
 /* ─── Responsive ────────────────────────────────────────── */
+
+/* Big desktop (≥1400px) — centering with max-width */
+@media (min-width: 1400px) {
+  .auth-container {
+    max-width: 1200px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    min-height: 90vh;
+    max-height: 900px;
+  }
+  body { padding: 40px; }
+}
+
+/* Standard desktop (901–1399px) — full height */
+@media (max-width: 1399px) {
+  .auth-container {
+    min-height: 100vh;
+  }
+}
+
+/* Medium / small desktop (≤900px) — stack */
 @media (max-width: 900px) {
   .auth-container { flex-direction: column; min-height: auto; }
-  .auth-left {
-    padding: 36px 24px;
-    min-height: 200px;
-  }
-  .brand-icon { width: 56px; height: 56px; font-size: 1.4rem; }
-  .auth-right { padding: 36px 24px; }
+  .auth-left,
+  .auth-right { width: 100%; }
+  .auth-left { padding: 32px 24px; min-height: 180px; }
+  .auth-right { padding: 32px 24px; }
+  .brand-icon { width: 52px; height: 52px; }
+  .brand h1 { font-size: 1.4rem; }
   .role-cards { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
   .gender-group { flex-direction: column; }
-  .role-btn { font-size: 0.82rem; padding: 10px 8px; }
+}
+
+/* Very narrow (≤480px) */
+@media (max-width: 480px) {
+  .auth-right { padding: 24px 16px; }
+  .btn-group { grid-template-columns: 1fr; }
+  .role-btn { font-size: 0.8rem; gap: 5px; }
+  .role-btn svg { width: 13px; height: 13px; }
 }
