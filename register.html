@@ -4,203 +4,216 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dorm Finder — สมัครสมาชิก</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" href="#" type="image/png" sizes="16x16">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🏠</text></svg>" type="image/svg+xml">
 </head>
 <body>
-  <div class="auth-container">
-    <section class="auth-left">
-      <div class="brand">
-        <div class="brand-illustration">🏠</div>
-        <h1>Dorm Finder</h1>
-        <p>สมัครสมาชิกเพื่อเริ่มต้น<br>ค้นหาหรือจัดการหอพักของคุณ</p>
-        <span class="tagline">Join Us Today 🚀</span>
+
+<div class="auth-container">
+  <!-- Left -->
+  <section class="auth-left">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+          <polyline points="9 21 9 13 15 13 15 21"/>
+        </svg>
       </div>
-    </section>
-    <section class="auth-right">
-      <div class="form-wrapper scrollable">
-        <div class="auth-header">
-          <h2>สร้างบัญชีผู้ใช้</h2>
-          <p class="form-subtitle">กรุณาเลือกประเภทและกรอกข้อมูลให้ครบถ้วน</p>
+      <h1>Dorm Finder</h1>
+      <p>สมัครสมาชิกเพื่อเริ่มต้นใช้งาน<br>เลือกรับบทบาทที่เหมาะกับคุณ</p>
+      <span class="tagline">เริ่มต้นใช้งาน</span>
+    </div>
+  </section>
+
+  <!-- Right -->
+  <section class="auth-right">
+    <div class="form-wrapper scrollable">
+      <div class="auth-header">
+        <h2>สร้างบัญชีผู้ใช้</h2>
+        <p class="form-subtitle">เลือกประเภทผู้ใช้และกรอกข้อมูลให้ครบถ้วน</p>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="role-select-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        เลือกประเภทผู้ใช้
+      </div>
+
+      <div class="role-cards" id="roleCards">
+        <div class="role-card card-user selected-user" data-role="user" tabindex="0" role="button" aria-pressed="true">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3>ผู้ใช้ทั่วไป</h3>
+          <p>ค้นหาและจองหอพัก ดูรายละเอียดและรีวิวห้องพัก</p>
         </div>
-
-        <p style="font-size:0.85rem; font-weight:600; margin-bottom:10px; color:#666;">
-          <i class="fas fa-user-tag"></i> เลือกประเภทผู้ใช้
-        </p>
-        <div class="role-cards" id="roleCards">
-          <div class="role-card card-user selected-user" data-role="user" tabindex="0" role="button" aria-pressed="true">
-            <div class="card-icon"><i class="fas fa-user"></i></div>
-            <h3>ผู้ใช้ทั่วไป</h3>
-            <p>ค้นหาและจองหอพัก<br>ดูรายละเอียดห้องพัก</p>
+        <div class="role-card card-admin" data-role="admin" tabindex="0" role="button" aria-pressed="false">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
           </div>
-          <div class="role-card card-admin" data-role="admin" tabindex="0" role="button" aria-pressed="false">
-            <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
-            <h3>ผู้ดูแลระบบ</h3>
-            <p>จัดการหอพัก ดูรายงาน<br>และควบคุมระบบ</p>
-          </div>
+          <h3>ผู้ดูแลระบบ</h3>
+          <p>จัดการหอพัก ดูรายงาน และควบคุมระบบทั้งหมด</p>
         </div>
+      </div>
 
-        <div id="registerRoleBadge" class="role-indicator user">
-          <i class="fas fa-user"></i> กำลังสมัครในฐานะ ผู้ใช้ทั่วไป
-        </div>
+      <div id="registerRoleBadge" class="role-indicator user">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        สมัครในฐานะ ผู้ใช้ทั่วไป
+      </div>
 
-        <div id="alertMessage" class="alert" role="alert">
-          <i class="fas fa-exclamation-circle"></i>
-          <span id="alertText"></span>
-        </div>
+      <div id="alertMessage" class="alert" role="alert">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="alertText"></span>
+      </div>
 
-        <form id="registerForm" novalidate>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="regUsername">ชื่อผู้ใช้</label>
-              <div class="input-group">
-                <i class="fas fa-user input-icon"></i>
-                <input type="text" id="regUsername" placeholder="Username" autocomplete="username" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="regEmail">อีเมล</label>
-              <div class="input-group">
-                <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email" required>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="regPassword">รหัสผ่าน</label>
-              <div class="input-group">
-                <i class="fas fa-lock input-icon"></i>
-                <input type="password" id="regPassword" placeholder="อย่างน้อย 8 ตัวอักษร" autocomplete="new-password" required>
-                <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('regPassword', this)" aria-label="แสดง/ซ่อนรหัสผ่าน">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="regConfirmPassword">ยืนยันรหัสผ่าน</label>
-              <div class="input-group">
-                <i class="fas fa-check-circle input-icon"></i>
-                <input type="password" id="regConfirmPassword" placeholder="ยืนยันรหัสผ่าน" autocomplete="new-password" required>
-                <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('regConfirmPassword', this)" aria-label="แสดง/ซ่อนรหัสผ่าน">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="regPhone">เบอร์โทรศัพท์</label>
-              <div class="input-group">
-                <i class="fas fa-phone input-icon"></i>
-                <input type="tel" id="regPhone" placeholder="0812345678" pattern="[0-9]{10}" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="regDob">วันเกิด</label>
-              <div class="input-group no-icon">
-                <input type="date" id="regDob" required>
-              </div>
-            </div>
-          </div>
-
+      <form id="registerForm" novalidate>
+        <!-- Row: Username + Email -->
+        <div class="form-row">
           <div class="form-group">
-            <label>เพศ</label>
-            <div class="gender-group" id="genderGroup">
-              <label class="gender-option">
-                <input type="radio" name="gender" value="male" required> ชาย
-              </label>
-              <label class="gender-option">
-                <input type="radio" name="gender" value="female"> หญิง
-              </label>
-              <label class="gender-option">
-                <input type="radio" name="gender" value="other"> อื่น ๆ
-              </label>
+            <label for="regUsername">ชื่อผู้ใช้</label>
+            <div class="input-group">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="regUsername" placeholder="Username" autocomplete="username" required>
             </div>
           </div>
-
-          <div style="margin: 8px 0 12px;">
-            <p style="font-size:0.85rem; font-weight:600; color:#666;">
-              <i class="fas fa-map-marker-alt"></i> ที่อยู่
-            </p>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="regStreet">บ้านเลขที่ / ถนน</label>
-              <div class="input-group no-icon">
-                <input type="text" id="regStreet" placeholder="เช่น 123/4 ถ.สุขุมวิท" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="regAlley">ตรอก / ซอย</label>
-              <div class="input-group no-icon">
-                <input type="text" id="regAlley" placeholder="เช่น ซอย 5">
-              </div>
+          <div class="form-group">
+            <label for="regEmail">อีเมล</label>
+            <div class="input-group">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email" required>
             </div>
           </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="regSubdistrict">แขวง / ตำบล</label>
-              <div class="input-group no-icon">
-                <input type="text" id="regSubdistrict" placeholder="ตำบล" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="regDistrict">เขต / อำเภอ</label>
-              <div class="input-group no-icon">
-                <input type="text" id="regDistrict" placeholder="อำเภอ" required>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="regProvince">จังหวัด</label>
-              <div class="input-group no-icon">
-                <input type="text" id="regProvince" placeholder="จังหวัด" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="regPostalCode">รหัสไปรษณีย์</label>
-              <div class="input-group no-icon">
-                <input type="text" id="regPostalCode" placeholder="เช่น 10110" pattern="[0-9]{5}" required>
-              </div>
-            </div>
-          </div>
-
-          <input type="hidden" id="regRole" value="user">
-
-          <div class="checkbox-group">
-            <input type="checkbox" id="termsCheckbox" required>
-            <label for="termsCheckbox">
-              โดยการสมัครสมาชิก คุณยอมรับ
-              <a href="#">ข้อกำหนดและเงื่อนไข</a> และ
-              <a href="#">นโยบายความเป็นส่วนตัว</a>
-            </label>
-          </div>
-
-          <div class="btn-group">
-            <button type="reset" class="btn btn-outline">
-              <i class="fas fa-undo"></i> ล้างข้อมูล
-            </button>
-            <button type="submit" class="btn btn-dark" id="registerSubmitBtn">
-              <i class="fas fa-user-plus"></i> สมัครสมาชิก
-            </button>
-          </div>
-        </form>
-
-        <div class="form-switch">
-          มีบัญชีอยู่แล้ว? <a href="index.html">เข้าสู่ระบบ</a>
         </div>
+
+        <!-- Row: Password + Confirm -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regPassword">รหัสผ่าน</label>
+            <div class="input-group">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="regPassword" placeholder="อย่างน้อย 8 ตัวอักษร" autocomplete="new-password" required>
+              <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('regPassword', this)" aria-label="แสดง/ซ่อนรหัสผ่าน">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regConfirmPassword">ยืนยันรหัสผ่าน</label>
+            <div class="input-group">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <input type="password" id="regConfirmPassword" placeholder="ยืนยันรหัสผ่าน" autocomplete="new-password" required>
+              <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('regConfirmPassword', this)" aria-label="แสดง/ซ่อนรหัสผ่าน">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row: Phone + DOB -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regPhone">เบอร์โทรศัพท์</label>
+            <div class="input-group">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.36 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <input type="tel" id="regPhone" placeholder="0812345678" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regDob">วันเกิด</label>
+            <div class="input-group no-icon">
+              <input type="date" id="regDob" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gender -->
+        <div class="form-group">
+          <label>เพศ</label>
+          <div class="gender-group" id="genderGroup">
+            <label class="gender-option"><input type="radio" name="gender" value="male" required> ชาย</label>
+            <label class="gender-option"><input type="radio" name="gender" value="female"> หญิง</label>
+            <label class="gender-option"><input type="radio" name="gender" value="other"> อื่น ๆ</label>
+          </div>
+        </div>
+
+        <!-- Address Section -->
+        <div class="section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ที่อยู่
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regStreet">บ้านเลขที่ / ถนน</label>
+            <div class="input-group no-icon">
+              <input type="text" id="regStreet" placeholder="123/4 ถ.สุขุมวิท" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regAlley">ตรอก / ซอย</label>
+            <div class="input-group no-icon">
+              <input type="text" id="regAlley" placeholder="ซอย 5">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regSubdistrict">แขวง / ตำบล</label>
+            <div class="input-group no-icon">
+              <input type="text" id="regSubdistrict" placeholder="ตำบล" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regDistrict">เขต / อำเภอ</label>
+            <div class="input-group no-icon">
+              <input type="text" id="regDistrict" placeholder="อำเภอ" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regProvince">จังหวัด</label>
+            <div class="input-group no-icon">
+              <input type="text" id="regProvince" placeholder="จังหวัด" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regPostalCode">รหัสไปรษณีย์</label>
+            <div class="input-group no-icon">
+              <input type="text" id="regPostalCode" placeholder="10110" pattern="[0-9]{5}" required>
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" id="regRole" value="user">
+
+        <!-- Terms -->
+        <div class="checkbox-group">
+          <input type="checkbox" id="termsCheckbox" required>
+          <label for="termsCheckbox">
+            โดยการสมัครสมาชิก คุณยอมรับ
+            <a href="#">ข้อกำหนดและเงื่อนไข</a> และ
+            <a href="#">นโยบายความเป็นส่วนตัว</a>
+          </label>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+          <button type="reset" class="btn btn-outline">ล้างข้อมูล</button>
+          <button type="submit" class="btn btn-dark" id="registerSubmitBtn">สมัครสมาชิก</button>
+        </div>
+      </form>
+
+      <div class="form-switch">
+        มีบัญชีอยู่แล้ว? <a href="index.html">เข้าสู่ระบบ</a>
       </div>
-    </section>
-  </div>
-  <script src="assets/js/api.js"></script>
-  <script src="assets/js/register.js"></script>
+    </div>
+  </section>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/register.js"></script>
 </body>
 </html>
