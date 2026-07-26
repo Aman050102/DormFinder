@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dorm Finder — สมัครสมาชิก</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="#" type="image/png" sizes="16x16">
+</head>
+<body>
+  <div class="auth-container">
+    <section class="auth-left">
+      <div class="brand">
+        <div class="brand-illustration">🏠</div>
+        <h1>Dorm Finder</h1>
+        <p>สมัครสมาชิกเพื่อเริ่มต้น<br>ค้นหาหรือจัดการหอพักของคุณ</p>
+        <span class="tagline">Join Us Today 🚀</span>
+      </div>
+    </section>
+    <section class="auth-right">
+      <div class="form-wrapper scrollable">
+        <div class="auth-header">
+          <h2>สร้างบัญชีผู้ใช้</h2>
+          <p class="form-subtitle">กรุณาเลือกประเภทและกรอกข้อมูลให้ครบถ้วน</p>
+        </div>
+
+        <p style="font-size:0.85rem; font-weight:600; margin-bottom:10px; color:#666;">
+          <i class="fas fa-user-tag"></i> เลือกประเภทผู้ใช้
+        </p>
+        <div class="role-cards" id="roleCards">
+          <div class="role-card card-user selected-user" data-role="user" tabindex="0" role="button" aria-pressed="true">
+            <div class="card-icon"><i class="fas fa-user"></i></div>
+            <h3>ผู้ใช้ทั่วไป</h3>
+            <p>ค้นหาและจองหอพัก<br>ดูรายละเอียดห้องพัก</p>
+          </div>
+          <div class="role-card card-admin" data-role="admin" tabindex="0" role="button" aria-pressed="false">
+            <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+            <h3>ผู้ดูแลระบบ</h3>
+            <p>จัดการหอพัก ดูรายงาน<br>และควบคุมระบบ</p>
+          </div>
+        </div>
+
+        <div id="registerRoleBadge" class="role-indicator user">
+          <i class="fas fa-user"></i> กำลังสมัครในฐานะ ผู้ใช้ทั่วไป
+        </div>
+
+        <div id="alertMessage" class="alert" role="alert">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="alertText"></span>
+        </div>
+
+        <form id="registerForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="regUsername">ชื่อผู้ใช้</label>
+              <div class="input-group">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="regUsername" placeholder="Username" autocomplete="username" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="regEmail">อีเมล</label>
+              <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="regPassword">รหัสผ่าน</label>
+              <div class="input-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="regPassword" placeholder="อย่างน้อย 8 ตัวอักษร" autocomplete="new-password" required>
+                <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('regPassword', this)" aria-label="แสดง/ซ่อนรหัสผ่าน">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="regConfirmPassword">ยืนยันรหัสผ่าน</label>
+              <div class="input-group">
+                <i class="fas fa-check-circle input-icon"></i>
+                <input type="password" id="regConfirmPassword" placeholder="ยืนยันรหัสผ่าน" autocomplete="new-password" required>
+                <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('regConfirmPassword', this)" aria-label="แสดง/ซ่อนรหัสผ่าน">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="regPhone">เบอร์โทรศัพท์</label>
+              <div class="input-group">
+                <i class="fas fa-phone input-icon"></i>
+                <input type="tel" id="regPhone" placeholder="0812345678" pattern="[0-9]{10}" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="regDob">วันเกิด</label>
+              <div class="input-group no-icon">
+                <input type="date" id="regDob" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>เพศ</label>
+            <div class="gender-group" id="genderGroup">
+              <label class="gender-option">
+                <input type="radio" name="gender" value="male" required> ชาย
+              </label>
+              <label class="gender-option">
+                <input type="radio" name="gender" value="female"> หญิง
+              </label>
+              <label class="gender-option">
+                <input type="radio" name="gender" value="other"> อื่น ๆ
+              </label>
+            </div>
+          </div>
+
+          <div style="margin: 8px 0 12px;">
+            <p style="font-size:0.85rem; font-weight:600; color:#666;">
+              <i class="fas fa-map-marker-alt"></i> ที่อยู่
+            </p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="regStreet">บ้านเลขที่ / ถนน</label>
+              <div class="input-group no-icon">
+                <input type="text" id="regStreet" placeholder="เช่น 123/4 ถ.สุขุมวิท" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="regAlley">ตรอก / ซอย</label>
+              <div class="input-group no-icon">
+                <input type="text" id="regAlley" placeholder="เช่น ซอย 5">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="regSubdistrict">แขวง / ตำบล</label>
+              <div class="input-group no-icon">
+                <input type="text" id="regSubdistrict" placeholder="ตำบล" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="regDistrict">เขต / อำเภอ</label>
+              <div class="input-group no-icon">
+                <input type="text" id="regDistrict" placeholder="อำเภอ" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="regProvince">จังหวัด</label>
+              <div class="input-group no-icon">
+                <input type="text" id="regProvince" placeholder="จังหวัด" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="regPostalCode">รหัสไปรษณีย์</label>
+              <div class="input-group no-icon">
+                <input type="text" id="regPostalCode" placeholder="เช่น 10110" pattern="[0-9]{5}" required>
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" id="regRole" value="user">
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="termsCheckbox" required>
+            <label for="termsCheckbox">
+              โดยการสมัครสมาชิก คุณยอมรับ
+              <a href="#">ข้อกำหนดและเงื่อนไข</a> และ
+              <a href="#">นโยบายความเป็นส่วนตัว</a>
+            </label>
+          </div>
+
+          <div class="btn-group">
+            <button type="reset" class="btn btn-outline">
+              <i class="fas fa-undo"></i> ล้างข้อมูล
+            </button>
+            <button type="submit" class="btn btn-dark" id="registerSubmitBtn">
+              <i class="fas fa-user-plus"></i> สมัครสมาชิก
+            </button>
+          </div>
+        </form>
+
+        <div class="form-switch">
+          มีบัญชีอยู่แล้ว? <a href="index.html">เข้าสู่ระบบ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/register.js"></script>
+</body>
+</html>
