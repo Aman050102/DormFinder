@@ -10,7 +10,6 @@
 <body>
 
 <div class="auth-container">
-  <!-- Left -->
   <section class="auth-left">
     <div class="brand">
       <div class="brand-icon">
@@ -20,45 +19,16 @@
         </svg>
       </div>
       <h1>Dorm Finder</h1>
-      <p>สมัครสมาชิกเพื่อเริ่มต้นใช้งาน<br>เลือกรับบทบาทที่เหมาะกับคุณ</p>
+      <p>สมัครสมาชิกเพื่อเริ่มต้น<br>ค้นหาหอพักที่ใช่สำหรับคุณ</p>
       <span class="tagline">เริ่มต้นใช้งาน</span>
     </div>
   </section>
 
-  <!-- Right -->
   <section class="auth-right">
     <div class="form-wrapper scrollable">
       <div class="auth-header">
         <h2>สร้างบัญชีผู้ใช้</h2>
-        <p class="form-subtitle">เลือกประเภทผู้ใช้และกรอกข้อมูลให้ครบถ้วน</p>
-      </div>
-
-      <!-- Role Selection -->
-      <div class="role-select-label">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        เลือกประเภทผู้ใช้
-      </div>
-
-      <div class="role-cards" id="roleCards">
-        <div class="role-card card-user selected-user" data-role="user" tabindex="0" role="button" aria-pressed="true">
-          <div class="card-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <h3>ผู้ใช้ทั่วไป</h3>
-          <p>ค้นหาและจองหอพัก ดูรายละเอียดและรีวิวห้องพัก</p>
-        </div>
-        <div class="role-card card-admin" data-role="admin" tabindex="0" role="button" aria-pressed="false">
-          <div class="card-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-          </div>
-          <h3>ผู้ดูแลระบบ</h3>
-          <p>จัดการหอพัก ดูรายงาน และควบคุมระบบทั้งหมด</p>
-        </div>
-      </div>
-
-      <div id="registerRoleBadge" class="role-indicator user">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        สมัครในฐานะ ผู้ใช้ทั่วไป
+        <p class="form-subtitle">กรอกข้อมูลให้ครบถ้วนเพื่อสมัครสมาชิก</p>
       </div>
 
       <div id="alertMessage" class="alert" role="alert">
@@ -67,7 +37,6 @@
       </div>
 
       <form id="registerForm" novalidate>
-        <!-- Row: Username + Email -->
         <div class="form-row">
           <div class="form-group">
             <label for="regUsername">ชื่อผู้ใช้</label>
@@ -85,7 +54,6 @@
           </div>
         </div>
 
-        <!-- Row: Password + Confirm -->
         <div class="form-row">
           <div class="form-group">
             <label for="regPassword">รหัสผ่าน</label>
@@ -109,7 +77,6 @@
           </div>
         </div>
 
-        <!-- Row: Phone + DOB -->
         <div class="form-row">
           <div class="form-group">
             <label for="regPhone">เบอร์โทรศัพท์</label>
@@ -126,17 +93,15 @@
           </div>
         </div>
 
-        <!-- Gender -->
         <div class="form-group">
           <label>เพศ</label>
-          <div class="gender-group" id="genderGroup">
+          <div class="gender-group">
             <label class="gender-option"><input type="radio" name="gender" value="male" required> ชาย</label>
             <label class="gender-option"><input type="radio" name="gender" value="female"> หญิง</label>
             <label class="gender-option"><input type="radio" name="gender" value="other"> อื่น ๆ</label>
           </div>
         </div>
 
-        <!-- Address Section -->
         <div class="section-title">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           ที่อยู่
@@ -187,9 +152,6 @@
           </div>
         </div>
 
-        <input type="hidden" id="regRole" value="user">
-
-        <!-- Terms -->
         <div class="checkbox-group">
           <input type="checkbox" id="termsCheckbox" required>
           <label for="termsCheckbox">
@@ -199,10 +161,8 @@
           </label>
         </div>
 
-        <!-- Buttons -->
         <div class="btn-group">
-          <button type="reset" class="btn btn-outline">ล้างข้อมูล</button>
-          <button type="submit" class="btn btn-dark" id="registerSubmitBtn">สมัครสมาชิก</button>
+          <button type="submit" class="btn btn-dark btn-full" id="registerSubmitBtn">สมัครสมาชิก</button>
         </div>
       </form>
 
